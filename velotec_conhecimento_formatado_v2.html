@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velotec Conhecimento</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f8fb;color:#1f2937}
+header{background:linear-gradient(135deg,#1f5f78,#4a9ab8);color:#fff;padding:42px 20px;text-align:center}
+main{max-width:1100px;margin:24px auto;padding:0 16px 40px}.card{background:#fff;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 6px 18px rgba(31,95,120,.10)}
+label{font-weight:700;display:block;margin:12px 0 6px}input,select,textarea{width:100%;border:1px solid #cfe0e8;border-radius:12px;padding:12px;font-size:15px}
+textarea{min-height:110px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tab-button,button{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.tab-button{background:#e5f0f5;color:#1f5f78}.tab-button.active,.primary{background:#1f5f78;color:#fff}
+.secondary{background:#e5f0f5;color:#1f5f78}.danger{background:#f4e1e1;color:#7a2d2d}.tab-content{display:none}.tab-content.active{display:block}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.category{border:1px solid #d7e7ee;border-radius:16px;padding:16px}.category h3{color:#1f5f78}
+.category button{width:100%;margin:4px 0;text-align:left;background:#edf6f9;color:#244b5a;padding:10px}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.resultado{min-height:300px;line-height:1.5;border:1px solid #cfe0e8;border-radius:14px;padding:28px;background:#fff;font-family:Arial,sans-serif;font-size:12pt;text-align:justify}
+.resultado .titulo-principal{text-align:center;font-weight:700;font-size:14pt;margin:0 0 24px}
+.resultado .secao-titulo{font-weight:700;margin:22px 0 10px;text-align:left}
+.resultado p{margin:0 0 12px;text-indent:1.25cm;line-height:1.5}
+.resultado .linha-simples{margin:0 0 8px;text-indent:0}.notice{background:#fff8e8;border-left:5px solid #d5a42d;padding:12px;border-radius:10px}
+@media(max-width:760px){.grid,.categories{grid-template-columns:1fr}.actions button{width:100%}}
+</style>
+</head>
+<body>
+<header><h1>🧠 Velotec Conhecimento</h1><p>Biblioteca inteligente e assistente pedagógico para consultas rápidas sobre educação especial.</p></header>
+<main>
+<section class="card">
+<div class="notice">Conteúdo informativo e pedagógico. Não substitui avaliação, diagnóstico ou orientação clínica.</div>
+<label for="apiKey">Chave da API Groq</label><input id="apiKey" type="password" placeholder="Cole aqui sua chave da Groq">
+</section>
+
+<div class="tabs">
+<button id="btnBiblioteca" class="tab-button active" onclick="abrirAba('biblioteca')">📚 Biblioteca por categorias</button>
+<button id="btnAssistente" class="tab-button" onclick="abrirAba('assistente')">🤖 Assistente Pedagógico</button>
+</div>
+
+<div id="abaBiblioteca" class="tab-content active">
+<section class="card">
+<label for="tema">Pesquisar tema</label><input id="tema" type="text" placeholder="Ex.: deficiência intelectual, Síndrome de Down...">
+<div class="categories">
+<div class="category"><h3>🧩 Neurodesenvolvimento</h3>
+<button onclick="selecionarTema('Transtorno do Espectro Autista')">Transtorno do Espectro Autista</button>
+<button onclick="selecionarTema('Deficiência intelectual')">Deficiência intelectual</button>
+<button onclick="selecionarTema('TDAH')">TDAH</button>
+<button onclick="selecionarTema('Transtornos da comunicação')">Transtornos da comunicação</button></div>
+<div class="category"><h3>🧬 Síndromes</h3>
+<button onclick="selecionarTema('Síndrome de Down')">Síndrome de Down</button>
+<button onclick="selecionarTema('Síndrome de Rett')">Síndrome de Rett</button>
+<button onclick="selecionarTema('Síndrome de Williams')">Síndrome de Williams</button>
+<button onclick="selecionarTema('Síndrome do X Frágil')">Síndrome do X Frágil</button>
+<button onclick="selecionarTema('Síndrome de Angelman')">Síndrome de Angelman</button></div>
+<div class="category"><h3>♿ Deficiências e condições</h3>
+<button onclick="selecionarTema('Deficiência visual')">Deficiência visual</button>
+<button onclick="selecionarTema('Deficiência auditiva')">Deficiência auditiva</button>
+<button onclick="selecionarTema('Deficiência física')">Deficiência física</button>
+<button onclick="selecionarTema('Deficiência múltipla')">Deficiência múltipla</button>
+<button onclick="selecionarTema('Paralisia cerebral')">Paralisia cerebral</button></div>
+</div>
+</section>
+<section class="card"><div class="actions">
+<button id="botaoPesquisar" class="primary" onclick="pesquisarTema()">Pesquisar</button>
+<button class="secondary" onclick="copiarTexto('resultado')">Copiar texto</button>
+<button class="secondary" onclick="baixarWord('resultado','consulta_velotec.doc')">Baixar em Word</button>
+<button class="danger" onclick="limparBiblioteca()">Limpar</button>
+</div></section>
+<section class="card"><h2>Resultado da consulta</h2><div id="resultado" class="resultado">A pesquisa aparecerá aqui.</div></section>
+</div>
+
+<div id="abaAssistente" class="tab-content">
+<section class="card">
+<div class="grid"><div><label for="idade">Idade ou faixa etária</label><input id="idade" type="text" placeholder="Ex.: 8 anos ou adulto de 45 anos"></div>
+<div><label for="apoio">Nível de necessidade de apoio</label><select id="apoio"><option value="">Não informado</option><option>Baixa necessidade de apoio</option><option>Necessidade moderada de apoio</option><option>Alta necessidade de apoio</option></select></div></div>
+<label for="condicao">Condição, deficiência ou diagnóstico informado</label><input id="condicao" type="text" placeholder="Ex.: deficiência intelectual, Síndrome de Down...">
+<label for="perfil">Perfil do educando</label><textarea id="perfil" placeholder="Descreva comunicação, autonomia, comportamento, dificuldades, interesses e habilidades."></textarea>
+<label for="duvida">O que você precisa saber ou planejar?</label><textarea id="duvida" placeholder="Ex.: Como trabalhar alfabetização? Que adaptações usar?"></textarea>
+<label for="contexto">Contexto do atendimento</label><textarea id="contexto" placeholder="Ex.: atendimento individual na APAE, sala de aula, oficina..."></textarea>
+</section>
+<section class="card"><div class="actions">
+<button id="botaoAssistente" class="primary" onclick="consultarAssistente()">Consultar assistente</button>
+<button class="secondary" onclick="copiarTexto('resultadoAssistente')">Copiar texto</button>
+<button class="secondary" onclick="baixarWord('resultadoAssistente','assistente_pedagogico.doc')">Baixar em Word</button>
+<button class="danger" onclick="limparAssistente()">Limpar</button>
+</div></section>
+<section class="card"><h2>Orientação pedagógica</h2><div id="resultadoAssistente" class="resultado">A orientação aparecerá aqui.</div></section>
+</div>
+</main>
+
+<script>
+function limparTexto(t){return (t||'').trim().replace(/\s+/g,' ')}
+function abrirAba(a){const b=a==='biblioteca';document.getElementById('abaBiblioteca').classList.toggle('active',b);document.getElementById('abaAssistente').classList.toggle('active',!b);document.getElementById('btnBiblioteca').classList.toggle('active',b);document.getElementById('btnAssistente').classList.toggle('active',!b)}
+function selecionarTema(t){document.getElementById('tema').value=t}
+async function chamarGroq(prompt,max_tokens){
+ const chave=limparTexto(document.getElementById('apiKey').value);if(!chave)throw new Error('Cole sua chave da API Groq.');
+ const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${chave}`},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:.35,max_tokens})});
+ if(!r.ok){const e=await r.json();throw new Error(e?.error?.message||r.status)}const d=await r.json();return d.choices?.[0]?.message?.content||''
+}
+async function pesquisarTema(){
+ const tema=limparTexto(document.getElementById('tema').value);if(!tema){document.getElementById('resultado').innerText='Digite ou selecione um tema.';return}
+ const e=document.getElementById('resultado'),b=document.getElementById('botaoPesquisar');b.disabled=true;e.innerText='Preparando a consulta, aguarde...';
+ const p=`Você é uma pedagoga especialista em educação especial. Produza uma ficha informativa e pedagógica sobre: ${tema}.
+Não diagnosticar, não generalizar e usar expressões como "pode apresentar" e "as necessidades variam".
+Não usar Markdown. Organizar exatamente em:
+O QUE É
+CARACTERÍSTICAS POSSÍVEIS
+IMPACTOS NA APRENDIZAGEM E PARTICIPAÇÃO
+COMUNICAÇÃO
+AUTONOMIA E VIDA DIÁRIA
+ESTRATÉGIAS PEDAGÓGICAS
+RECURSOS E ADAPTAÇÕES
+CUIDADOS IMPORTANTES
+O QUE EVITAR
+QUANDO BUSCAR APOIO DE OUTROS PROFISSIONAIS
+Escrever para pedagogos e profissionais da educação especial.`;
+ try{const t=await chamarGroq(p,2600);renderizarResultado(e,t.trim()||'Sem resposta.',tema)}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
+}
+async function consultarAssistente(){
+ const idade=limparTexto(document.getElementById('idade').value),apoio=document.getElementById('apoio').value,condicao=limparTexto(document.getElementById('condicao').value),perfil=limparTexto(document.getElementById('perfil').value),duvida=limparTexto(document.getElementById('duvida').value),contexto=limparTexto(document.getElementById('contexto').value);
+ if(!duvida){document.getElementById('resultadoAssistente').innerText='Descreva o que você precisa saber ou planejar.';return}
+ const e=document.getElementById('resultadoAssistente'),b=document.getElementById('botaoAssistente');b.disabled=true;e.innerText='Analisando o caso pedagógico, aguarde...';
+ const p=`Você é uma pedagoga especialista em educação especial. Analise o caso sem diagnosticar e sem substituir avaliação clínica.
+Idade: ${idade||'não informada'}.
+Necessidade de apoio: ${apoio||'não informada'}.
+Condição informada: ${condicao||'não informada'}.
+Perfil: ${perfil||'não informado'}.
+Contexto: ${contexto||'não informado'}.
+Solicitação: ${duvida}.
+Adaptar à faixa etária e evitar infantilização de adolescentes e adultos.
+Não usar Markdown. Organizar exatamente em:
+COMPREENSÃO DO PERFIL
+PRIORIDADES PEDAGÓGICAS
+FORMAS DE ABORDAGEM
+ESTRATÉGIAS SUGERIDAS
+ADAPTAÇÕES E APOIOS
+RECURSOS E MATERIAIS
+O QUE OBSERVAR
+CUIDADOS IMPORTANTES`;
+ try{const t=await chamarGroq(p,2800);renderizarResultado(e,t.trim()||'Sem resposta.','Orientação Pedagógica')}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
+}
+function escaparHtml(texto){
+  return texto.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function renderizarResultado(elemento,texto,titulo){
+  const linhas=texto.split('\n').map(l=>l.trim());
+  const titulos=['O QUE É','CARACTERÍSTICAS POSSÍVEIS','IMPACTOS NA APRENDIZAGEM E PARTICIPAÇÃO','COMUNICAÇÃO','AUTONOMIA E VIDA DIÁRIA','ESTRATÉGIAS PEDAGÓGICAS','RECURSOS E ADAPTAÇÕES','CUIDADOS IMPORTANTES','O QUE EVITAR','QUANDO BUSCAR APOIO DE OUTROS PROFISSIONAIS','COMPREENSÃO DO PERFIL','PRIORIDADES PEDAGÓGICAS','FORMAS DE ABORDAGEM','ESTRATÉGIAS SUGERIDAS','ADAPTAÇÕES E APOIOS','RECURSOS E MATERIAIS','O QUE OBSERVAR'];
+  let html=`<div class="titulo-principal">${escaparHtml(titulo)}</div>`;
+  for(const linha of linhas){
+    if(!linha) continue;
+    if(titulos.includes(linha.toUpperCase())) html+=`<div class="secao-titulo">${escaparHtml(linha.toUpperCase())}</div>`;
+    else if(/^\d+\./.test(linha)) html+=`<p class="linha-simples">${escaparHtml(linha)}</p>`;
+    else html+=`<p>${escaparHtml(linha)}</p>`;
+  }
+  elemento.innerHTML=html;
+}
+function copiarTexto(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert('Texto copiado!')}
+function baixarWord(id,nome){
+  const elemento=document.getElementById(id);
+  const titulo=id==='resultado' ? (limparTexto(document.getElementById('tema').value)||'Consulta Velotec') : 'Orientação Pedagógica';
+  let linhas=elemento.innerText.split('\n').map(l=>l.trim()).filter(Boolean);
+
+  // Remove repetição do título quando a IA devolve o nome do tema na primeira linha
+  if(linhas.length>0){
+    const primeiro=linhas[0].toLowerCase();
+    const tituloNorm=titulo.toLowerCase();
+    if(primeiro===tituloNorm){
+      linhas.shift();
+    }
+  }
+  const titulos=['O QUE É','CARACTERÍSTICAS POSSÍVEIS','IMPACTOS NA APRENDIZAGEM E PARTICIPAÇÃO','COMUNICAÇÃO','AUTONOMIA E VIDA DIÁRIA','ESTRATÉGIAS PEDAGÓGICAS','RECURSOS E ADAPTAÇÕES','CUIDADOS IMPORTANTES','O QUE EVITAR','QUANDO BUSCAR APOIO DE OUTROS PROFISSIONAIS','COMPREENSÃO DO PERFIL','PRIORIDADES PEDAGÓGICAS','FORMAS DE ABORDAGEM','ESTRATÉGIAS SUGERIDAS','ADAPTAÇÕES E APOIOS','RECURSOS E MATERIAIS','O QUE OBSERVAR'];
+  let corpo=`<h1>${escaparHtml(titulo)}</h1>`;
+  for(const linha of linhas){
+    if(titulos.includes(linha.toUpperCase())) corpo+=`<h2>${escaparHtml(linha.toUpperCase())}</h2>`;
+    else if(/^\d+\./.test(linha)) corpo+=`<p class="sem-recuo">${escaparHtml(linha)}</p>`;
+    else corpo+=`<p>${escaparHtml(linha)}</p>`;
+  }
+  const h=`<html><head><meta charset="UTF-8"><style>
+  @page{size:A4;margin-top:3cm;margin-left:3cm;margin-right:2cm;margin-bottom:2cm}
+  body{font-family:Arial,sans-serif;font-size:12pt;line-height:1.5;text-align:justify}
+  h1{text-align:center;font-size:14pt;margin:0 0 24pt 0}
+  h2{font-size:12pt;font-weight:bold;text-align:left;margin:18pt 0 8pt 0}
+  p{margin:0 0 10pt 0;text-indent:1.25cm}
+  p.sem-recuo{text-indent:0}
+  </style></head><body>${corpo}</body></html>`;
+  const u=URL.createObjectURL(new Blob(['\ufeff',h],{type:'application/msword'}));
+  const a=document.createElement('a');a.href=u;a.download=nome;a.click();URL.revokeObjectURL(u);
+}
+function limparBiblioteca(){document.getElementById('tema').value='';document.getElementById('resultado').innerText='A pesquisa aparecerá aqui.'}
+function limparAssistente(){['idade','condicao','perfil','duvida','contexto'].forEach(i=>document.getElementById(i).value='');document.getElementById('apoio').value='';document.getElementById('resultadoAssistente').innerText='A orientação aparecerá aqui.'}
+</script>
+</body>
+</html>
