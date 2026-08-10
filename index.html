@@ -160,6 +160,12 @@ REGRAS FINAIS:
 - Não incluir planejamento.
 - Não infantilizar adolescentes ou adultos.
 - Priorizar conhecimento e compreensão da condição.
+- Mencionar o nome da condição principalmente na seção "O QUE É?".
+- Nas seções seguintes, evitar repetir desnecessariamente o nome da condição.
+- Utilizar construções naturais como "a pessoa", "essa condição", "nesse quadro", "em alguns casos", "no desenvolvimento" ou iniciar diretamente pela informação.
+- Evitar começar vários parágrafos consecutivos com estruturas semelhantes, como "As pessoas com...", "A condição pode..." ou "A síndrome pode...".
+- Variar a construção das frases e manter o texto fluido, coeso e natural.
+- Fazer com que cada seção pareça parte de um mesmo texto profissional, e não respostas isoladas.
 - Entregar somente a ficha informativa, sem comentários antes ou depois.`;
  try{const t=await chamarGroq(p,2600);renderizarResultado(e,t.trim()||'Sem resposta.',tema)}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
 }
