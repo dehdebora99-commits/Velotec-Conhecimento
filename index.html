@@ -160,13 +160,28 @@ REGRAS FINAIS:
 - Não incluir planejamento.
 - Não infantilizar adolescentes ou adultos.
 - Priorizar conhecimento e compreensão da condição.
-- Mencionar o nome da condição principalmente na seção "O QUE É?".
-- Nas seções seguintes, evitar repetir desnecessariamente o nome da condição.
-- Utilizar construções naturais como "a pessoa", "essa condição", "nesse quadro", "em alguns casos", "no desenvolvimento" ou iniciar diretamente pela informação.
-- Evitar começar vários parágrafos consecutivos com estruturas semelhantes, como "As pessoas com...", "A condição pode..." ou "A síndrome pode...".
-- Variar a construção das frases e manter o texto fluido, coeso e natural.
-- Fazer com que cada seção pareça parte de um mesmo texto profissional, e não respostas isoladas.
-- Entregar somente a ficha informativa, sem comentários antes ou depois.`;
+REGRA DE COESÃO E NÃO REPETIÇÃO:
+- O nome completo da condição deve aparecer no título e, no corpo do texto, no máximo uma vez na seção "O QUE É?".
+- Nas demais seções, não repetir o nome completo da condição, salvo quando for absolutamente indispensável para evitar ambiguidade.
+- Não iniciar seções consecutivas com estruturas semelhantes, como "A pessoa com...", "As pessoas com...", "A síndrome...", "A condição..." ou equivalentes.
+- Variar naturalmente a construção e o início dos parágrafos.
+- Fazer cada seção continuar a anterior como parte de um único texto profissional e coeso, e não como respostas independentes.
+- Cada nova seção deve acrescentar informação nova.
+- Não repetir características, manifestações, dificuldades ou explicações que já tenham sido apresentadas em uma seção anterior.
+- Quando um mesmo aspecto precisar aparecer novamente, abordar somente o novo ângulo necessário, sem reexplicar o conteúdo anterior.
+- Evitar listas de frases construídas sempre com "pode", "podem", "pode apresentar" ou estruturas repetitivas.
+- Usar pronomes, sujeitos implícitos e construções variadas quando isso deixar a leitura mais natural.
+- Manter linguagem informativa, respeitosa e profissional, sem transformar o texto em uma sequência mecânica de tópicos.
+
+REVISÃO OBRIGATÓRIA ANTES DE RESPONDER:
+Antes de entregar a ficha, revisar mentalmente todo o conteúdo e eliminar:
+- repetição desnecessária do nome da condição;
+- características já explicadas anteriormente;
+- informações duplicadas entre seções;
+- frases consecutivas com a mesma estrutura;
+- parágrafos que apenas reformulam uma informação já apresentada sem acrescentar conteúdo novo.
+
+Após essa revisão, entregar somente a ficha informativa final, sem comentários antes ou depois.`;
  try{const t=await chamarGroq(p,2600);renderizarResultado(e,t.trim()||'Sem resposta.',tema)}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
 }
 async function consultarAssistente(){
