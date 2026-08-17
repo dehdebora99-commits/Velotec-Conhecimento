@@ -92,7 +92,7 @@ function abrirAba(a){const b=a==='biblioteca';document.getElementById('abaBiblio
 function selecionarTema(t){document.getElementById('tema').value=t}
 async function chamarGroq(prompt,max_tokens){
  const chave=limparTexto(document.getElementById('apiKey').value);if(!chave)throw new Error('Cole sua chave da API Groq.');
- const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${chave}`},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:.35,max_tokens})});
+ const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${chave}`},body:JSON.stringify({model:'openai/gpt-oss-120b',messages:[{role:'user',content:prompt}],temperature:.35,max_tokens})});
  if(!r.ok){const e=await r.json();throw new Error(e?.error?.message||r.status)}const d=await r.json();return d.choices?.[0]?.message?.content||''
 }
 async function pesquisarTema(){
