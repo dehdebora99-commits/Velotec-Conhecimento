@@ -1,1 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velotec Conhecimento</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f8fb;color:#1f2937}
+header{background:linear-gradient(135deg,#1f5f78,#4a9ab8);color:#fff;padding:42px 20px;text-align:center}
+main{max-width:1100px;margin:24px auto;padding:0 16px 40px}.card{background:#fff;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 6px 18px rgba(31,95,120,.10)}
+label{font-weight:700;display:block;margin:12px 0 6px}input,select,textarea{width:100%;border:1px solid #cfe0e8;border-radius:12px;padding:12px;font-size:15px}
+textarea{min-height:110px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tab-button,button{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.tab-button{background:#e5f0f5;color:#1f5f78}.tab-button.active,.primary{background:#1f5f78;color:#fff}
+.secondary{background:#e5f0f5;color:#1f5f78}.danger{background:#f4e1e1;color:#7a2d2d}.tab-content{display:none}.tab-content.active{display:block}
+.categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.category{border:1px solid #d7e7ee;border-radius:16px;padding:0;overflow:hidden;align-self:start}.category summary{cursor:pointer;padding:18px;font-size:17px;font-weight:700;color:#1f5f78;list-style:none}.category summary::-webkit-details-marker{display:none}.category summary::after{content:"⌄";float:right}.category[open] summary::after{content:"⌃"}.category-items{padding:0 14px 14px}
+.category button{width:100%;margin:4px 0;text-align:left;background:#edf6f9;color:#244b5a;padding:10px}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.resultado{min-height:300px;line-height:1.5;border:1px solid #cfe0e8;border-radius:14px;padding:28px;background:#fff;font-family:Arial,sans-serif;font-size:12pt;text-align:justify}
+.resultado .titulo-principal{text-align:center;font-weight:700;font-size:14pt;margin:0 0 24px}
+.resultado .secao-titulo{font-weight:700;margin:22px 0 10px;text-align:left}
+.resultado p{margin:0 0 12px;text-indent:1.25cm;line-height:1.5}
+.resultado .linha-simples{margin:0 0 8px;text-indent:0}.notice{background:#fff8e8;border-left:5px solid #d5a42d;padding:12px;border-radius:10px}
+@media(max-width:760px){.grid,.categories{grid-template-columns:1fr}.actions button{width:100%}}
 
+
+:root{--honey:#ffcf59;--gold:#e7a72b;--ink:#382604;--cream:#fff8e6;--line:#f7dca5}
+body{color:var(--ink);background:#fff8e6;min-height:100vh;position:relative;background-image:radial-gradient(ellipse at 52% 30%,#fffdf5 0%,#fff8e6 75%)}
+body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none;width:235px;height:235px;opacity:.9;background-repeat:no-repeat;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 230 230'%3E%3Cg fill='none' stroke='%23f6ad19' stroke-width='2.5'%3E%3Cpath d='M8 20 34 5 60 20 60 50 34 65 8 50Z M68 20 94 5 120 20 120 50 94 65 68 50Z M128 20 154 5 180 20 180 50 154 65 128 50Z M38 74 64 59 90 74 90 104 64 119 38 104Z M8 128 34 113 60 128 60 158 34 173 8 158Z'/%3E%3C/g%3E%3C/svg%3E")}
+body::before{top:0;left:0}body::after{right:0;bottom:0;transform:rotate(180deg)}
+header{background:transparent;color:var(--ink);padding:18px 18px 10px;position:relative}
+header h1{font-family:'Trebuchet MS',Arial,sans-serif;font-size:clamp(32px,4vw,58px);font-weight:700;letter-spacing:-1.5px;margin:0 0 8px;color:#4b3205}
+header p{font-size:17px;line-height:1.5;margin:0;color:#272016}
+.header-bee{font-size:50px;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 3px 1px #e9b44c)}
+header h1{display:inline-block;vertical-align:middle}
+main{max-width:1480px;margin:0 auto;padding:0 22px 60px}
+.card{background:rgba(255,255,255,.65);border:1px solid var(--line);border-radius:17px;box-shadow:0 8px 24px rgba(177,125,27,.06);padding:18px;margin-bottom:14px}
+.api-card{background:transparent;border:0;box-shadow:none;padding:0 0 14px;margin:0}
+.notice{max-width:940px;margin:0 auto 18px;background:#ffe9b7;border:0;border-radius:14px;color:#4e390f;padding:13px 20px;text-align:center}
+.api-row{display:flex;align-items:center;gap:22px;max-width:1190px;margin:auto}.api-row label{white-space:nowrap;margin:0}.api-row input{flex:1}
+input,select,textarea{border:1px solid #f0d8ad;border-radius:16px;background:rgba(255,255,255,.88);padding:16px 20px;color:#3e3016;font-size:16px;box-shadow:0 3px 9px rgba(139,92,12,.035)}
+input:focus{outline:2px solid #f5bf42;outline-offset:1px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:10px 0 14px}
+.tab-button,button{transition:background .15s,transform .15s;min-height:48px}
+.tab-button{background:#fff1d2;border:1px solid #f6d69a;color:#432908;font-size:16px}
+.tab-button.active,.primary{background:var(--honey);color:#281b06;border:1px solid #ffd46a;box-shadow:0 3px 12px rgba(218,153,25,.11)}
+.tab-button:hover,.primary:hover{background:#ffdb7a}.secondary{background:#fff5e4;color:#392a13;border:1px solid #f4dfbb}.danger{background:#fce7df;color:#a43e1e;border:1px solid #f4d3c5}
+.library-layout{display:grid;grid-template-columns:minmax(340px,46%) minmax(0,54%);gap:14px;align-items:start}
+.library-left{padding:18px}.library-right{min-width:0}.library-right .card{margin-bottom:12px}
+.library-left #tema{margin:0 0 15px}.categories{display:flex;flex-direction:column;gap:9px;margin-top:0}
+.category{border:1px solid #f7dfa9;background:linear-gradient(115deg,#ffefc9,#ffe6a8);border-radius:18px;overflow:hidden}
+.category summary{display:flex;align-items:center;gap:16px;min-height:96px;padding:15px 19px;color:#261a06;list-style:none}
+.category summary::after{display:none}.cat-symbol{width:50px;text-align:center;font-size:38px;flex-shrink:0;color:#613c0b}.cat-heading{flex:1;display:flex;flex-direction:column;gap:7px}.cat-heading strong{font-size:19px}.cat-heading small{font-size:13px;font-weight:400;color:#6c6657;line-height:1.35}.chevron{font-size:27px;transition:transform .15s}.category[open] .chevron{transform:rotate(180deg)}
+.category-items{padding:10px 12px 14px;max-height:380px;overflow:auto;background:#fffaf0;border-top:1px solid #f3dca9}.category button{background:#fff7e5;color:#4e3611;border:1px solid #f6e4bf;margin:3px 0;border-radius:10px;font-weight:500}.category button:hover{background:#ffe6a9}
+.actions-card{padding:16px 12px}.actions{gap:10px;justify-content:center}.actions button{flex:1;white-space:nowrap;padding:12px 10px}
+.result-card h2{font-size:21px;margin:4px 0 14px}.resultado{background:rgba(255,255,255,.78);border:1px dashed #edbf64;border-radius:18px;min-height:320px;color:#2e3645;padding:28px;line-height:1.6}
+.empty-state{text-align:center;padding:42px 5px 30px;color:#26364d}.empty-bee{font-size:38px;display:block;margin-bottom:14px}.empty-state p{text-indent:0;margin:0 0 8px;font-size:17px}.empty-state small{font-size:14px;color:#64748b;line-height:1.6}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.library-layout{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.api-row{flex-direction:column;align-items:stretch;gap:8px}.actions button{flex:1 1 140px}}
+@media(max-width:760px){main{padding:0 12px 40px}header{padding-top:32px}header h1{font-size:32px}.header-bee{font-size:36px}.desktop-only{display:none}.category summary{min-height:80px}.notice{text-align:left}.actions button{width:auto}}
+
+</style>
+</head>
+<body>
+<header><div class="header-bee" aria-hidden="true">🐝</div><h1>Velotec Conhecimento</h1><p>Biblioteca inteligente para conhecer condições, deficiências, síndromes,<br class="desktop-only"> transtornos e condições do desenvolvimento.</p></header>
+<main>
+<section class="card api-card">
+<div class="notice">ⓘ &nbsp;Conteúdo informativo e pedagógico. Não substitui avaliação, diagnóstico ou orientação clínica.</div>
+<div class="api-row"><label for="apiKey">Chave da API Groq</label><input id="apiKey" type="password" placeholder="Cole aqui sua chave da Groq"></div>
+</section>
+
+<div class="tabs">
+<button id="btnBiblioteca" class="tab-button active" onclick="abrirAba('biblioteca')">▣ &nbsp; Biblioteca por Categorias</button>
+<button id="btnCodigos" class="tab-button" onclick="abrirAba('codigos')">▤ &nbsp; Consulta CID e DSM-5-TR</button>
+<button id="btnMedicamentos" class="tab-button" onclick="abrirAba('medicamentos')">💊 &nbsp; Consulta de Medicamentos</button>
+</div>
+
+<div id="abaBiblioteca" class="tab-content active">
+<div class="library-layout"><section class="card library-left">
+<label for="tema" class="sr-only">Pesquisar tema</label><input id="tema" type="search" placeholder="⌕  Buscar pelo nome da condição..." oninput="filtrarCategorias()">
+<div class="categories">
+<details class="category"><summary><span class="cat-symbol" aria-hidden="true">♿</span><span class="cat-heading"><strong>Deficiências</strong><small>Intelectual, física, visual, auditiva, múltipla e outras.</small></span><span class="chevron">⌄</span></summary><div class="category-items"><button type="button" onclick="selecionarTema(&quot;Baixa visão&quot;)">Baixa visão</button>
+<button type="button" onclick="selecionarTema(&quot;Cegueira&quot;)">Cegueira</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência auditiva&quot;)">Deficiência auditiva</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência física&quot;)">Deficiência física</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência intelectual&quot;)">Deficiência intelectual</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência motora&quot;)">Deficiência motora</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência múltipla&quot;)">Deficiência múltipla</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência psicossocial&quot;)">Deficiência psicossocial</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência sensorial&quot;)">Deficiência sensorial</button>
+<button type="button" onclick="selecionarTema(&quot;Deficiência visual&quot;)">Deficiência visual</button>
+<button type="button" onclick="selecionarTema(&quot;Perda auditiva condutiva&quot;)">Perda auditiva condutiva</button>
+<button type="button" onclick="selecionarTema(&quot;Perda auditiva neurossensorial&quot;)">Perda auditiva neurossensorial</button>
+<button type="button" onclick="selecionarTema(&quot;Surdocegueira&quot;)">Surdocegueira</button></div></details>
+<details class="category"><summary><span class="cat-symbol" aria-hidden="true">♡</span><span class="cat-heading"><strong>Síndromes</strong><small>Genéticas, cromossômicas, metabólicas e outras.</small></span><span class="chevron">⌄</span></summary><div class="category-items"><button type="button" onclick="selecionarTema(&quot;Síndrome 22q11.2 (DiGeorge)&quot;)">Síndrome 22q11.2 (DiGeorge)</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome Aarskog-Scott&quot;)">Síndrome Aarskog-Scott</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Aicardi&quot;)">Síndrome de Aicardi</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Alagille&quot;)">Síndrome de Alagille</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Alström&quot;)">Síndrome de Alström</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Angelman&quot;)">Síndrome de Angelman</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Apert&quot;)">Síndrome de Apert</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Bardet-Biedl&quot;)">Síndrome de Bardet-Biedl</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Beckwith-Wiedemann&quot;)">Síndrome de Beckwith-Wiedemann</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Bloom&quot;)">Síndrome de Bloom</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Bohring-Opitz&quot;)">Síndrome de Bohring-Opitz</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de CHARGE&quot;)">Síndrome de CHARGE</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Coffin-Lowry&quot;)">Síndrome de Coffin-Lowry</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Coffin-Siris&quot;)">Síndrome de Coffin-Siris</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Cohen&quot;)">Síndrome de Cohen</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Cornelia de Lange&quot;)">Síndrome de Cornelia de Lange</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Cri-du-chat&quot;)">Síndrome de Cri-du-chat</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Crouzon&quot;)">Síndrome de Crouzon</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Dandy-Walker&quot;)">Síndrome de Dandy-Walker</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Down&quot;)">Síndrome de Down</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Dravet&quot;)">Síndrome de Dravet</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Edwards&quot;)">Síndrome de Edwards</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Ehlers-Danlos&quot;)">Síndrome de Ehlers-Danlos</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Ellis-van Creveld&quot;)">Síndrome de Ellis-van Creveld</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Emanuel&quot;)">Síndrome de Emanuel</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Freeman-Sheldon&quot;)">Síndrome de Freeman-Sheldon</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Goldenhar&quot;)">Síndrome de Goldenhar</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Gorlin&quot;)">Síndrome de Gorlin</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Holt-Oram&quot;)">Síndrome de Holt-Oram</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Joubert&quot;)">Síndrome de Joubert</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Kabuki&quot;)">Síndrome de Kabuki</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Kallmann&quot;)">Síndrome de Kallmann</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Kleefstra&quot;)">Síndrome de Kleefstra</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Klinefelter&quot;)">Síndrome de Klinefelter</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Koolen-de Vries&quot;)">Síndrome de Koolen-de Vries</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Landau-Kleffner&quot;)">Síndrome de Landau-Kleffner</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Leigh&quot;)">Síndrome de Leigh</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Lennox-Gastaut&quot;)">Síndrome de Lennox-Gastaut</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Loeys-Dietz&quot;)">Síndrome de Loeys-Dietz</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Marfan&quot;)">Síndrome de Marfan</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Mowat-Wilson&quot;)">Síndrome de Mowat-Wilson</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Noonan&quot;)">Síndrome de Noonan</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Patau&quot;)">Síndrome de Patau</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Phelan-McDermid&quot;)">Síndrome de Phelan-McDermid</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Pitt-Hopkins&quot;)">Síndrome de Pitt-Hopkins</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Prader-Willi&quot;)">Síndrome de Prader-Willi</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Rett&quot;)">Síndrome de Rett</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Rubinstein-Taybi&quot;)">Síndrome de Rubinstein-Taybi</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Sanfilippo&quot;)">Síndrome de Sanfilippo</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Smith-Lemli-Opitz&quot;)">Síndrome de Smith-Lemli-Opitz</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Smith-Magenis&quot;)">Síndrome de Smith-Magenis</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Sotos&quot;)">Síndrome de Sotos</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Sturge-Weber&quot;)">Síndrome de Sturge-Weber</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Treacher Collins&quot;)">Síndrome de Treacher Collins</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Turner&quot;)">Síndrome de Turner</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Usher&quot;)">Síndrome de Usher</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Waardenburg&quot;)">Síndrome de Waardenburg</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de West&quot;)">Síndrome de West</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Williams&quot;)">Síndrome de Williams</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Wolf-Hirschhorn&quot;)">Síndrome de Wolf-Hirschhorn</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome de Zellweger&quot;)">Síndrome de Zellweger</button>
+<button type="button" onclick="selecionarTema(&quot;Síndrome do X Frágil&quot;)">Síndrome do X Frágil</button></div></details>
+<details class="category"><summary><span class="cat-symbol" aria-hidden="true">♧</span><span class="cat-heading"><strong>Transtornos</strong><small>Neurodesenvolvimento, comunicação, aprendizagem e outros.</small></span><span class="chevron">⌄</span></summary><div class="category-items"><button type="button" onclick="selecionarTema(&quot;Mutismo seletivo&quot;)">Mutismo seletivo</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno da comunicação social (pragmática)&quot;)">Transtorno da comunicação social (pragmática)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno da fluência com início na infância (gagueira)&quot;)">Transtorno da fluência com início na infância (gagueira)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de alimentação restritiva/evitativa (TARE)&quot;)">Transtorno de alimentação restritiva/evitativa (TARE)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de ansiedade de separação&quot;)">Transtorno de ansiedade de separação</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de comportamento disruptivo&quot;)">Transtorno de comportamento disruptivo</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de conduta&quot;)">Transtorno de conduta</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de Déficit de Atenção/Hiperatividade (TDAH)&quot;)">Transtorno de Déficit de Atenção/Hiperatividade (TDAH)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de processamento auditivo central (TPAC)&quot;)">Transtorno de processamento auditivo central (TPAC)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de tique motor ou vocal persistente&quot;)">Transtorno de tique motor ou vocal persistente</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno de Tourette&quot;)">Transtorno de Tourette</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do desenvolvimento da coordenação&quot;)">Transtorno do desenvolvimento da coordenação</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do desenvolvimento da fala&quot;)">Transtorno do desenvolvimento da fala</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do desenvolvimento da linguagem&quot;)">Transtorno do desenvolvimento da linguagem</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do desenvolvimento dos sons da fala&quot;)">Transtorno do desenvolvimento dos sons da fala</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do desenvolvimento intelectual&quot;)">Transtorno do desenvolvimento intelectual</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do Espectro Autista (TEA)&quot;)">Transtorno do Espectro Autista (TEA)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do movimento estereotipado&quot;)">Transtorno do movimento estereotipado</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno do sono-vigília&quot;)">Transtorno do sono-vigília</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno específico da aprendizagem&quot;)">Transtorno específico da aprendizagem</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno específico da aprendizagem com prejuízo na escrita&quot;)">Transtorno específico da aprendizagem com prejuízo na escrita</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno específico da aprendizagem com prejuízo na leitura (dislexia)&quot;)">Transtorno específico da aprendizagem com prejuízo na leitura (dislexia)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno específico da aprendizagem com prejuízo na matemática (discalculia)&quot;)">Transtorno específico da aprendizagem com prejuízo na matemática (discalculia)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno obsessivo-compulsivo (TOC)&quot;)">Transtorno obsessivo-compulsivo (TOC)</button>
+<button type="button" onclick="selecionarTema(&quot;Transtorno opositor desafiador (TOD)&quot;)">Transtorno opositor desafiador (TOD)</button></div></details>
+<details class="category"><summary><span class="cat-symbol" aria-hidden="true">♙</span><span class="cat-heading"><strong>Condições do desenvolvimento</strong><small>Atrasos, alterações e outras condições relacionadas.</small></span><span class="chevron">⌄</span></summary><div class="category-items"><button type="button" onclick="selecionarTema(&quot;Acondroplasia&quot;)">Acondroplasia</button>
+<button type="button" onclick="selecionarTema(&quot;Agenesia do corpo caloso&quot;)">Agenesia do corpo caloso</button>
+<button type="button" onclick="selecionarTema(&quot;Alterações congênitas dos membros&quot;)">Alterações congênitas dos membros</button>
+<button type="button" onclick="selecionarTema(&quot;Atraso global do desenvolvimento&quot;)">Atraso global do desenvolvimento</button>
+<button type="button" onclick="selecionarTema(&quot;Atrofia muscular espinhal (AME)&quot;)">Atrofia muscular espinhal (AME)</button>
+<button type="button" onclick="selecionarTema(&quot;Craniossinostose&quot;)">Craniossinostose</button>
+<button type="button" onclick="selecionarTema(&quot;Displasia cortical focal&quot;)">Displasia cortical focal</button>
+<button type="button" onclick="selecionarTema(&quot;Displasia do desenvolvimento do quadril&quot;)">Displasia do desenvolvimento do quadril</button>
+<button type="button" onclick="selecionarTema(&quot;Distonia infantil&quot;)">Distonia infantil</button>
+<button type="button" onclick="selecionarTema(&quot;Distrofia muscular de Becker&quot;)">Distrofia muscular de Becker</button>
+<button type="button" onclick="selecionarTema(&quot;Distrofia muscular de Duchenne&quot;)">Distrofia muscular de Duchenne</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Batten&quot;)">Doença de Batten</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Canavan&quot;)">Doença de Canavan</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Krabbe&quot;)">Doença de Krabbe</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Niemann-Pick&quot;)">Doença de Niemann-Pick</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Pompe&quot;)">Doença de Pompe</button>
+<button type="button" onclick="selecionarTema(&quot;Doença de Tay-Sachs&quot;)">Doença de Tay-Sachs</button>
+<button type="button" onclick="selecionarTema(&quot;Encefalopatia epiléptica e do desenvolvimento&quot;)">Encefalopatia epiléptica e do desenvolvimento</button>
+<button type="button" onclick="selecionarTema(&quot;Encefalopatia hipóxico-isquêmica neonatal&quot;)">Encefalopatia hipóxico-isquêmica neonatal</button>
+<button type="button" onclick="selecionarTema(&quot;Esclerose tuberosa&quot;)">Esclerose tuberosa</button>
+<button type="button" onclick="selecionarTema(&quot;Espinha bífida&quot;)">Espinha bífida</button>
+<button type="button" onclick="selecionarTema(&quot;Fenilcetonúria&quot;)">Fenilcetonúria</button>
+<button type="button" onclick="selecionarTema(&quot;Hidrocefalia congênita&quot;)">Hidrocefalia congênita</button>
+<button type="button" onclick="selecionarTema(&quot;Hipoplasia do corpo caloso&quot;)">Hipoplasia do corpo caloso</button>
+<button type="button" onclick="selecionarTema(&quot;Leucodistrofia metacromática&quot;)">Leucodistrofia metacromática</button>
+<button type="button" onclick="selecionarTema(&quot;Lissencefalia&quot;)">Lissencefalia</button>
+<button type="button" onclick="selecionarTema(&quot;Malformação de Chiari&quot;)">Malformação de Chiari</button>
+<button type="button" onclick="selecionarTema(&quot;Microcefalia&quot;)">Microcefalia</button>
+<button type="button" onclick="selecionarTema(&quot;Mielomeningocele&quot;)">Mielomeningocele</button>
+<button type="button" onclick="selecionarTema(&quot;Neurofibromatose tipo 1&quot;)">Neurofibromatose tipo 1</button>
+<button type="button" onclick="selecionarTema(&quot;Paralisia cerebral&quot;)">Paralisia cerebral</button>
+<button type="button" onclick="selecionarTema(&quot;Polimicrogiria&quot;)">Polimicrogiria</button>
+<button type="button" onclick="selecionarTema(&quot;Prematuridade e alterações do desenvolvimento&quot;)">Prematuridade e alterações do desenvolvimento</button>
+<button type="button" onclick="selecionarTema(&quot;Restrição do crescimento intrauterino&quot;)">Restrição do crescimento intrauterino</button>
+<button type="button" onclick="selecionarTema(&quot;Trissomia em mosaico&quot;)">Trissomia em mosaico</button>
+<button type="button" onclick="selecionarTema(&quot;Tuberose esclerosa&quot;)">Tuberose esclerosa</button></div></details>
+</div>
+</section>
+<div class="library-right"><section class="card actions-card"><div class="actions">
+<button id="botaoPesquisar" class="primary" onclick="pesquisarTema()">Pesquisar</button>
+<button class="secondary" onclick="copiarTexto('resultado')">Copiar texto</button>
+<button class="secondary" onclick="baixarWord('resultado','consulta_velotec.doc')">Baixar em Word</button>
+<button class="danger" onclick="limparBiblioteca()">Limpar</button>
+</div></section>
+<section class="card result-card"><h2>⬡ Resultado da consulta</h2><div id="resultado" class="resultado"><div class="empty-state"><span class="empty-bee">🐝</span><p>A pesquisa aparecerá aqui.</p><small>Escolha uma categoria ou digite o nome da condição<br>para iniciar a consulta.</small></div></div></section></div></div>
+</div>
+
+<div id="abaCodigos" class="tab-content">
+<section class="card"><h2>Consulta CID e DSM-5-TR</h2><p>Pesquise pelo nome da condição ou por um código. Os resultados são informativos e devem ser conferidos nas classificações oficiais.</p>
+<label for="codigo">Nome ou código</label><input id="codigo" placeholder="Ex.: autismo, F84.0, 6A02, TDAH">
+<div class="actions" style="margin-top:14px"><button id="botaoCodigos" class="primary" onclick="pesquisarCodigo()">Pesquisar</button><button class="secondary" onclick="copiarTexto('resultadoCodigos')">Copiar texto</button><button class="secondary" onclick="baixarWord('resultadoCodigos','consulta_codigos.doc')">Baixar em Word</button><button class="danger" onclick="limparConsulta('codigo','resultadoCodigos')">Limpar</button></div></section>
+<section class="card"><h2>Resultado da consulta</h2><div id="resultadoCodigos" class="resultado">A pesquisa aparecerá aqui.</div></section></div>
+<div id="abaMedicamentos" class="tab-content">
+<section class="card"><h2>Consulta de Medicamentos</h2><p>Informações gerais para compreender medicamentos, sem indicação de doses ou tratamentos individuais.</p>
+<label for="medicamento">Nome do medicamento</label><input id="medicamento" placeholder="Ex.: Ritalina, risperidona, fluoxetina">
+<div class="actions" style="margin-top:14px"><button id="botaoMedicamentos" class="primary" onclick="pesquisarMedicamento()">Pesquisar</button><button class="secondary" onclick="copiarTexto('resultadoMedicamentos')">Copiar texto</button><button class="secondary" onclick="baixarWord('resultadoMedicamentos','consulta_medicamento.doc')">Baixar em Word</button><button class="danger" onclick="limparConsulta('medicamento','resultadoMedicamentos')">Limpar</button></div></section>
+<section class="card"><h2>Resultado da consulta</h2><div id="resultadoMedicamentos" class="resultado">A pesquisa aparecerá aqui.</div></section></div>
+</main>
+
+<script>
+function limparTexto(t){return (t||'').trim().replace(/\s+/g,' ')}
+function abrirAba(a){
+ const nomes={biblioteca:'Biblioteca',codigos:'Codigos',medicamentos:'Medicamentos'};
+ Object.entries(nomes).forEach(([chave,sufixo])=>{
+ document.getElementById('aba'+sufixo).classList.toggle('active',a===chave);
+ document.getElementById('btn'+sufixo).classList.toggle('active',a===chave);
+ });
+}
+function selecionarTema(t){document.getElementById('tema').value=t;filtrarCategorias();}
+async function chamarGroq(prompt,max_tokens){
+ const chave=limparTexto(document.getElementById('apiKey').value);if(!chave)throw new Error('Cole sua chave da API Groq.');
+ const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${chave}`},body:JSON.stringify({model:'openai/gpt-oss-120b',messages:[{role:'user',content:prompt}],temperature:.35,max_tokens})});
+ if(!r.ok){const e=await r.json();throw new Error(e?.error?.message||r.status)}const d=await r.json();return d.choices?.[0]?.message?.content||''
+}
+async function pesquisarTema(){
+ const tema=limparTexto(document.getElementById('tema').value);if(!tema){document.getElementById('resultado').innerText='Digite ou selecione um tema.';return}
+ const e=document.getElementById('resultado'),b=document.getElementById('botaoPesquisar');b.disabled=true;e.innerText='Preparando a consulta, aguarde...';
+ const p=`Você é uma pedagoga especialista em educação especial e inclusão.
+
+Produza uma ficha informativa para conhecer e compreender a condição pesquisada.
+
+TEMA:
+${tema}
+
+FINALIDADE:
+- Esta consulta serve para conhecer a condição, deficiência, síndrome ou transtorno.
+- Não criar estratégias pedagógicas, atividades, planejamentos ou intervenções.
+- Explicar de forma clara, acessível, responsável e informativa.
+- Não diagnosticar uma pessoa individualmente.
+- Não generalizar características.
+- Deixar claro que cada pessoa é única e que as manifestações podem variar.
+- Quando uma informação não se aplicar à condição pesquisada, explicar isso de forma breve.
+- Não utilizar Markdown, asteriscos, hashtags ou símbolos de formatação.
+- Utilizar somente texto simples.
+
+ORGANIZAR EXATAMENTE NESTA ORDEM:
+
+O QUE É?
+
+Explicar de forma simples o que é a condição.
+
+PRINCIPAIS CARACTERÍSTICAS
+
+Apresentar características que podem estar presentes, deixando claro que cada pessoa é única.
+
+COMO PODE AFETAR O DESENVOLVIMENTO?
+
+Explicar possíveis impactos na linguagem, aprendizagem, desenvolvimento motor, socialização, autonomia e outras áreas, quando aplicável.
+
+SINAIS E MANIFESTAÇÕES
+
+Explicar o que pode ser observado ao longo do desenvolvimento, quando aplicável.
+
+DIAGNÓSTICO E AVALIAÇÃO
+
+Explicar de forma geral como ocorre a identificação ou avaliação e quais profissionais podem participar, sem realizar diagnóstico.
+
+DESENVOLVIMENTO E APRENDIZAGEM
+
+Explicar como a pessoa pode aprender e quais aspectos podem necessitar de maior apoio, sem transformar a resposta em lista de estratégias.
+
+COMUNICAÇÃO E INTERAÇÃO
+
+Explicar aspectos de linguagem, comunicação, comunicação alternativa e interação social, quando relacionados à condição.
+
+AUTONOMIA E VIDA DIÁRIA
+
+Explicar possibilidades e desafios relacionados à independência nas atividades cotidianas.
+
+MITOS E VERDADES
+
+Apresentar informações equivocadas comuns sobre a condição e esclarecê-las de forma respeitosa e objetiva.
+
+REGRAS FINAIS:
+- Não incluir uma seção de estratégias pedagógicas.
+- Não incluir sugestões de atividades.
+- Não incluir planejamento.
+- Não infantilizar adolescentes ou adultos.
+- Priorizar conhecimento e compreensão da condição.
+REGRA DE COESÃO E NÃO REPETIÇÃO:
+- O nome completo da condição deve aparecer no título e, no corpo do texto, no máximo uma vez na seção "O QUE É?".
+- Nas demais seções, não repetir o nome completo da condição, salvo quando for absolutamente indispensável para evitar ambiguidade.
+- Não iniciar seções consecutivas com estruturas semelhantes, como "A pessoa com...", "As pessoas com...", "A síndrome...", "A condição..." ou equivalentes.
+- Variar naturalmente a construção e o início dos parágrafos.
+- Fazer cada seção continuar a anterior como parte de um único texto profissional e coeso, e não como respostas independentes.
+- Cada nova seção deve acrescentar informação nova.
+- Não repetir características, manifestações, dificuldades ou explicações que já tenham sido apresentadas em uma seção anterior.
+- Quando um mesmo aspecto precisar aparecer novamente, abordar somente o novo ângulo necessário, sem reexplicar o conteúdo anterior.
+- Evitar listas de frases construídas sempre com "pode", "podem", "pode apresentar" ou estruturas repetitivas.
+- Usar pronomes, sujeitos implícitos e construções variadas quando isso deixar a leitura mais natural.
+- Manter linguagem informativa, respeitosa e profissional, sem transformar o texto em uma sequência mecânica de tópicos.
+
+REVISÃO OBRIGATÓRIA ANTES DE RESPONDER:
+Antes de entregar a ficha, revisar mentalmente todo o conteúdo e eliminar:
+- repetição desnecessária do nome da condição;
+- características já explicadas anteriormente;
+- informações duplicadas entre seções;
+- frases consecutivas com a mesma estrutura;
+- parágrafos que apenas reformulam uma informação já apresentada sem acrescentar conteúdo novo.
+
+Após essa revisão, entregar somente a ficha informativa final, sem comentários antes ou depois.`;
+ try{const t=await chamarGroq(p,2600);renderizarResultado(e,t.trim()||'Sem resposta.',tema)}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
+}
+async function pesquisarConsulta(campo,saida,botao,titulo,instrucoes,maxTokens=1600){
+ const termo=limparTexto(document.getElementById(campo).value);
+ const e=document.getElementById(saida),b=document.getElementById(botao);
+ if(!termo){e.innerText='Digite um nome ou código para pesquisar.';return}
+ b.disabled=true;e.innerText='Preparando a consulta, aguarde...';
+ const prompt=`Você produz fichas informativas em português brasileiro. Responda somente em texto simples, com seções em maiúsculas, sem Markdown. Seja claro, conciso e rigoroso. Não invente informações nem fontes. Se não puder confirmar algo, indique explicitamente que não foi possível confirmar. Não diagnostique nem prescreva.\nCONSULTA: ${termo}\n${instrucoes}`;
+ try{const t=await chamarGroq(prompt,maxTokens);renderizarResultado(e,t.trim()||'Sem resposta.',titulo+': '+termo)}catch(x){e.innerText='Erro: '+x.message}finally{b.disabled=false}
+}
+function pesquisarCodigo(){return pesquisarConsulta('codigo','resultadoCodigos','botaoCodigos','CID e DSM',`Apresente, quando aplicável: IDENTIFICAÇÃO; CID-10; CID-11; DSM-5-TR; EXPLICAÇÃO SIMPLES; OBSERVAÇÕES SOBRE A CONFIRMAÇÃO. Diferencie classificações, nomenclaturas e versões. Não trate DSM como equivalente automático da CID. Para códigos ambíguos, incompletos ou inexistentes, explique e peça confirmação da versão. Não declare ter verificado uma fonte oficial em tempo real, pois esta consulta usa apenas o modelo. Oriente a confirmar em fontes oficiais da OMS e na edição licenciada do DSM-5-TR.`,1700)}
+function pesquisarMedicamento(){return pesquisarConsulta('medicamento','resultadoMedicamentos','botaoMedicamentos','Medicamento',`Apresente: NOME E PRINCÍPIO ATIVO; PARA QUE SERVE; QUANDO COMEÇA A AGIR; DURAÇÃO DO EFEITO; EFEITOS COLATERAIS COMUNS; CUIDADOS IMPORTANTES. Diferencie início de ação e tempo até benefício clínico; informe quando depender da formulação, dose e pessoa. Não sugira dose, início, troca ou suspensão do medicamento. Informe sinais graves que exigem atendimento quando relevantes. Se o nome comercial for ambíguo, peça país, apresentação ou princípio ativo. Não afirme que consultou bula em tempo real. Recomende conferir bula oficial atualizada e orientação de profissional de saúde.`,1700)}
+function limparConsulta(campo,saida){document.getElementById(campo).value='';document.getElementById(saida).innerText='A pesquisa aparecerá aqui.'}
+function escaparHtml(texto){
+  return texto.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function renderizarResultado(elemento,texto,titulo){
+  const linhas=texto.split('\n').map(l=>l.trim());
+  const titulos=['O QUE É?','O QUE É','PRINCIPAIS CARACTERÍSTICAS','COMO PODE AFETAR O DESENVOLVIMENTO?','COMO PODE AFETAR O DESENVOLVIMENTO','SINAIS E MANIFESTAÇÕES','DIAGNÓSTICO E AVALIAÇÃO','DESENVOLVIMENTO E APRENDIZAGEM','COMUNICAÇÃO E INTERAÇÃO','AUTONOMIA E VIDA DIÁRIA','MITOS E VERDADES','RESPOSTA À DÚVIDA','EXPLICAÇÃO','O QUE PODE VARIAR DE PESSOA PARA PESSOA','QUANDO É IMPORTANTE BUSCAR AVALIAÇÃO OU ORIENTAÇÃO DE OUTROS PROFISSIONAIS','IDENTIFICAÇÃO','CID-10','CID-11','DSM-5-TR','EXPLICAÇÃO SIMPLES','OBSERVAÇÕES SOBRE A CONFIRMAÇÃO','NOME E PRINCÍPIO ATIVO','PARA QUE SERVE','QUANDO COMEÇA A AGIR','DURAÇÃO DO EFEITO','EFEITOS COLATERAIS COMUNS','CUIDADOS IMPORTANTES'];
+  let html=`<div class="titulo-principal">${escaparHtml(titulo)}</div>`;
+  for(const linha of linhas){
+    if(!linha) continue;
+    if(titulos.includes(linha.toUpperCase())) html+=`<div class="secao-titulo">${escaparHtml(linha.toUpperCase())}</div>`;
+    else if(/^\d+\./.test(linha)) html+=`<p class="linha-simples">${escaparHtml(linha)}</p>`;
+    else html+=`<p>${escaparHtml(linha)}</p>`;
+  }
+  elemento.innerHTML=html;
+}
+function copiarTexto(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert('Texto copiado!')}
+function baixarWord(id,nome){
+  const elemento=document.getElementById(id);
+  const titulo=id==='resultado' ? (limparTexto(document.getElementById('tema').value)||'Consulta Velotec') : id==='resultadoCodigos' ? 'CID e DSM: '+limparTexto(document.getElementById('codigo').value) : 'Medicamento: '+limparTexto(document.getElementById('medicamento').value);
+  let linhas=elemento.innerText.split('\n').map(l=>l.trim()).filter(Boolean);
+
+  // Remove repetição do título quando a IA devolve o nome do tema na primeira linha
+  if(linhas.length>0){
+    const primeiro=linhas[0].toLowerCase();
+    const tituloNorm=titulo.toLowerCase();
+    if(primeiro===tituloNorm){
+      linhas.shift();
+    }
+  }
+  const titulos=['O QUE É?','O QUE É','PRINCIPAIS CARACTERÍSTICAS','COMO PODE AFETAR O DESENVOLVIMENTO?','COMO PODE AFETAR O DESENVOLVIMENTO','SINAIS E MANIFESTAÇÕES','DIAGNÓSTICO E AVALIAÇÃO','DESENVOLVIMENTO E APRENDIZAGEM','COMUNICAÇÃO E INTERAÇÃO','AUTONOMIA E VIDA DIÁRIA','MITOS E VERDADES','RESPOSTA À DÚVIDA','EXPLICAÇÃO','O QUE PODE VARIAR DE PESSOA PARA PESSOA','QUANDO É IMPORTANTE BUSCAR AVALIAÇÃO OU ORIENTAÇÃO DE OUTROS PROFISSIONAIS','IDENTIFICAÇÃO','CID-10','CID-11','DSM-5-TR','EXPLICAÇÃO SIMPLES','OBSERVAÇÕES SOBRE A CONFIRMAÇÃO','NOME E PRINCÍPIO ATIVO','PARA QUE SERVE','QUANDO COMEÇA A AGIR','DURAÇÃO DO EFEITO','EFEITOS COLATERAIS COMUNS','CUIDADOS IMPORTANTES'];
+  let corpo=`<h1>${escaparHtml(titulo)}</h1>`;
+  for(const linha of linhas){
+    if(titulos.includes(linha.toUpperCase())) corpo+=`<h2>${escaparHtml(linha.toUpperCase())}</h2>`;
+    else if(/^\d+\./.test(linha)) corpo+=`<p class="sem-recuo">${escaparHtml(linha)}</p>`;
+    else corpo+=`<p>${escaparHtml(linha)}</p>`;
+  }
+  const h=`<html><head><meta charset="UTF-8"><style>
+  @page{size:A4;margin-top:3cm;margin-left:3cm;margin-right:2cm;margin-bottom:2cm}
+  body{font-family:Arial,sans-serif;font-size:12pt;line-height:1.5;text-align:justify}
+  h1{text-align:center;font-size:14pt;margin:0 0 24pt 0}
+  h2{font-size:12pt;font-weight:bold;text-align:left;margin:18pt 0 8pt 0}
+  p{margin:0 0 10pt 0;text-indent:1.25cm}
+  p.sem-recuo{text-indent:0}
+  </style></head><body>${corpo}</body></html>`;
+  const u=URL.createObjectURL(new Blob(['\ufeff',h],{type:'application/msword'}));
+  const a=document.createElement('a');a.href=u;a.download=nome;a.click();URL.revokeObjectURL(u);
+}
+function limparBiblioteca(){document.getElementById('tema').value='';document.getElementById('resultado').innerText='A pesquisa aparecerá aqui.';filtrarCategorias();}
+
+function filtrarCategorias(){
+ const busca=limparTexto(document.getElementById('tema').value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ document.querySelectorAll('.category').forEach(c=>{
+  let achou=0;
+  c.querySelectorAll('.category-items button').forEach(b=>{
+   const nome=b.textContent.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+   const visivel=!busca||nome.includes(busca);b.hidden=!visivel;if(visivel)achou++;
+  });
+  c.style.display=(!busca||achou)?'':'none';
+  if(busca&&achou)c.open=true;
+ });
+}
+</script>
+</body>
+</html>
